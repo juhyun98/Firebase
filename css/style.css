@@ -1,0 +1,38 @@
+/* ====================================
+   index.html 스타일
+   ==================================== */
+   
+body {
+  font-family: Arial, system-ui;
+  margin: 20px;
+}
+
+input,
+button {
+  padding: 8px;
+  margin: 4px;
+}
+
+#items {
+  margin-top: 12px;
+}
+
+li {
+  cursor: pointer;
+  padding: 6px;
+  border-bottom: 1px solid #eee;
+}
+
+#loginBtn {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#loginBtn:hover {
+  background-color: #0056b3;
+}
