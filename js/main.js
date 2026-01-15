@@ -18,6 +18,7 @@ const app = firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const database = firebase.database(); // 실시간 데이터베이스 객체 생성
 
+
 /* 
     [Auth - 기능 정의]
     1. 로그인/회원가입 버튼 클릭 시, login.html 로 이동한다.
@@ -52,6 +53,7 @@ const itemEl = document.getElementById("items");
 
 /* ---------------------------------------------------------------- */
 
+
 // 데이터 저장 기능 구현
 const createItem = () => {
     // 1. 사용자가 입력한 키, 값 가져오기
@@ -77,21 +79,21 @@ const createItem = () => {
 
 // 데이터 조회하는 기능 구현
 const readItem = () => {
-    // 데이터 조회에 필요한 값은?
-    database.ref("items").on("value", (snapshot) => {
+    // 데이터 조회에 필요한 값은? 첫 번째 key값 -> items
+    database.ref("items").once("value", (snapshot) => {
         // console.log(snapshot.val().msg);
 
-        let resultHTML = "";
+        // let resultHTML = "";
 
-        snapshot.forEach((child) => {
-            console.log("Key값:", child.Key, "Value값:", child.val());
-            resultHTML += `
-              <li>Key: ${child.key} | Value: ${child.val().test} | CreateAt: ${child.val().createAt}</li>
-            `;
-        });
+        // snapshot.forEach((child) => {
+        //     console.log("Key값:", child.Key, "Value값:", child.val());
+        //     resultHTML += `
+        //       <li>Key: ${child.key} | Value: ${child.val().test} | CreateAt: ${child.val().createAt}</li>
+        //     `;
+        // });
 
-        itemEl.innerHTML = resultHTML;
-
+        // itemEl.innerHTML = resultHTML;
+        renderList(snapshot);
     });
 }
 
@@ -103,20 +105,57 @@ const updateItem = () => {
     let value = valueEl.value.trim();
 
     // 2. 데이터 수정하기 ( ref(), update() )
-    database.ref("items/"+key).update();
+    database.ref("items/"+key).update({test:value, createAt: Date.now()});
 
     // 3. 입력 요소 초기화
+    keyEl.value = "";
+    valueEl.value = "";
 
 }
 
+// 데이터 삭제 기능 구현
+const deleteItem = () => {
+    // 1. 데이터 삭제를 위한 key값 가져오기
+    let key = keyEl.value.trim();
 
+    // 2. 데이터 삭제하기
+    database.ref("items/"+key).remove();
+
+    // 3. key 입력요소 초기화
+    keyEl.value = "";
+
+}
+
+// 데이터를 조회하는 기능 구현 - renderList()
+const renderList = (snapshot) => {
+
+    if(snapshot.val() === null) {
+        itemEl.innerHTML = "<li>현재 저장된 데이터가 없습니다.</li>";
+        return;
+    }
+
+    let resultHTML = "";
+
+    snapshot.forEach((child) => {
+        resultHTML += `
+          <li>Key: ${child.key} | Value: ${child.val().test} | CreateAt: ${child.val().createAt}</li>
+        `;
+    });
+
+    itemEl.innerHTML = resultHTML;
+}
+
+// 초기 데이터 로드 및 실시간 감시
+database.ref("items").on("value", (snapshot) => {
+    renderList(snapshot);
+})
 
 
 
 createBtn.addEventListener("click", createItem);
 readBtn.addEventListener("click", readItem);
 updateBtn.addEventListener("click", updateItem);
-
+deleteBtn.addEventListener("click", deleteItem);
 
 
 // Firebase 인증 상태 변화를 감지하는 함수
@@ -129,7 +168,9 @@ auth.onAuthStateChanged((user) => {
 
   } else {
     // 로그아웃 상태일 때
-
+    loginSectionEl.style.display = "block";
+    crudSectionEl.style.display = "none";
+    userEmailEl.innerText = "";
   }
 });
 
@@ -142,7 +183,11 @@ loginBtn.addEventListener("click", () => {
     location.href = "login.html";
 })
 
+// 로그아웃 기능
 logoutBtn.addEventListener("click", () => {
-    auth.signOut();
-    location.href = location.href;
+    auth.signOut().then(() => {
+        alert("로그아웃 되었습니다!");
+        location.reload(); // 페이지 새로고침
+        // location.href = location.href;
+    });
 });
