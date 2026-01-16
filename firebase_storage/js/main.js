@@ -70,7 +70,7 @@ const getFileList = async () => {
 
     const res = await storageRef.listAll();
 
-    const promises = res.items.map(item=>
+    const promises = res.items.map(item =>
         storage.ref(item.fullPath).getDownloadURL()
         .then(url => ({
             name:item.name,
@@ -82,7 +82,7 @@ const getFileList = async () => {
 
     console.log("파일크기:", fileList.length);
 
-    const resultHTML  = fileList.map(file => 
+    const resultHTML  = fileList.map(file =>
          `<div style="border-radius:10px; box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;">
              <p>파일명:${file.name}</p>
              <img src="${file.path}" style="width:150px; height:150px;" loading="lazy" />
