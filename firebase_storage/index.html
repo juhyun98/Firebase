@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <!-- 
+        Firebase Storage 실습 주의사항
+        - 1일 업로드 횟수 : 20,000건
+        - 1일 다운로드 횟수 : 50,000건
+        - 1일 다운로드 크기(GB) : 1GB
+        - 저장 허용량 : 5GB
+        * 무료 허용량 초과 시 각 항목별 별도 요금 발생 ( Blaze 요금플랜 참고 )
+    -->
+
+    <h1>Firebase Storage 실습</h1>
+    <hr>
+
+    <div>
+        <input type="file" id="fileInput">
+        <button id="uploadBtn">업로드</button>
+    </div>
+
+    <div>
+        <button id="loadBtn">이미지 조회</button>
+        <img id="preview" width="300">
+    </div>
+
+    <div>
+        <button id="listReadBtn">파일 목록 조회</button>
+    <div id="fileList" style="display: flex; flex-wrap: wrap; gap:10px;"></ul>
+    </div>
+    
+
+    <!-- JS 영역 -->
+    <!-- Firebase 서비스 추가하기 ( Core(필수), Storage ) -->
+    <script src="https://www.gstatic.com/firebasejs/12.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.7.0/firebase-storage-compat.js"></script>
+    <script src="js/main.js"></script>
+
+</body>
+</html>
