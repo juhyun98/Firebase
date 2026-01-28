@@ -1,6 +1,6 @@
 // Firebase 프로젝트 연동에 필요한 정보 초기화
 const firebaseConfig = {
-    apiKey: "AIzaSyAyQeiK1LZur5c8p6yjivtUDSiPvBPEfDI",
+    apiKey: "",
     authDomain: "test-1-9b171.firebaseapp.com",
     projectId: "test-1-9b171",
     storageBucket: "test-1-9b171.firebasestorage.app",
